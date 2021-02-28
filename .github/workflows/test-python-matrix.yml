@@ -8,6 +8,9 @@ jobs:
       matrix:
         python-version: [3.6, 3.7, 3.8, 3.9]
         os: [ubuntu-20.04, macos-latest, windows-latest]
+        exclude:
+          - os: windows-latest  # I think this is hitting https://github.com/pypa/virtualenv/issues/1986
+            python-version: 3.6
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
