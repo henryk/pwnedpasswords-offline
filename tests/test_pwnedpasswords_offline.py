@@ -15,6 +15,21 @@ def test_instantiation(data_file_path):
     assert a
 
 
+def test_instantiate_with_str(data_file_path):
+    a = PwnedPasswordsOfflineChecker(str(data_file_path))
+    assert a
+
+
+def test_instantiate_with_dir(data_file_path):
+    with pytest.raises(ValueError):
+        PwnedPasswordsOfflineChecker(str(data_file_path.parent))
+
+
+def test_instantiate_nonexist(data_file_path):
+    with pytest.raises(ValueError):
+        PwnedPasswordsOfflineChecker(data_file_path.parent / "foo.txt")
+
+
 def test_open_close(data_file_path):
     a = PwnedPasswordsOfflineChecker(data_file_path)
     a.open()

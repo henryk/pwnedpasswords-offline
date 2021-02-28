@@ -15,7 +15,7 @@ class PwnedPasswordsOfflineChecker:
         if data_file.is_dir():
             data_file = data_file / "pwned-passwords-sha1-ordered-by-hash-v7.txt"
 
-        if not data_file.exists() and data_file.is_file():
+        if not (data_file.exists() and data_file.is_file()):
             raise ValueError(
                 "Must specify path or directory to data file "
                 "(should be pwned-passwords-sha1-ordered-by-hash-v7.txt)"
