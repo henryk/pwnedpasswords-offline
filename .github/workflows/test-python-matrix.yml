@@ -23,14 +23,14 @@ jobs:
         uses: actions/cache@v1
         id: cache
         with:
-          path: ~/.virtualenvs
-          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-x
+          path: $HOME/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-y
           restore-keys: |
-            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-x
+            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-y
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ~/.virtualenvs
+          poetry config virtualenvs.path $HOME/.virtualenvs
       - name: Install Dependencies
         run: poetry install
         if: steps.cache.outputs.cache-hit != 'true'
