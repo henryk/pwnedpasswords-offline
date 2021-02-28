@@ -19,16 +19,31 @@ jobs:
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: 1.1.4
-      - name: Install dependencies
+      - name: Cache Poetry virtualenv
+        uses: actions/cache@v1
+        id: cache
+        with:
+          path: ~/.virtualenvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}
+          restore-keys: |
+            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}
+      - name: Set Poetry config
+        run: |
+          poetry config settings.virtualenvs.in-project false
+          poetry config settings.virtualenvs.path ~/.virtualenvs
+      - name: Install Dependencies
         run: poetry install
-      - name: Build a binary wheel and a source tarball
-        run: poetry build
+        if: steps.cache.outputs.cache-hit != 'true'
+      - name: Code Quality
+        run: poetry run black . --check
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
-          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=E203
+          poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=E203
       - name: Test with pytest
         run: |
-          pytest --doctest-modules --junitxml=junit/test-results.xml --cov=pwnedpasswords_offline --cov-report=xml --cov-report=html
+          poetry run pytest --doctest-modules --junitxml=junit/test-results.xml --cov=pwnedpasswords_offline --cov-report=xml --cov-report=html
+      - name: Build a binary wheel and a source tarball
+        run: poetry build
