@@ -66,22 +66,14 @@ jobs:
       - uses: actions/checkout@master
         with:
           path: source
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python 3.8
         uses: actions/setup-python@v1
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: 3.8
       - name: Setup poetry 1.1.4
         uses: abatilo/actions-poetry@v2.0.0
         with:
           poetry-version: 1.1.4
-      - name: Cache Poetry virtualenv
-        uses: actions/cache@v1
-        id: cache
-        with:
-          path: venvs
-          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-b
-          restore-keys: |
-            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-b
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project false
