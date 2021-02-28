@@ -1,0 +1,34 @@
+name: Run Python 🐍 matrix test
+on: push
+jobs:
+  ci:
+    name: Run Python 🐍 matrix test
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.6, 3.7, 3.8, 3.9]
+        os: [ubuntu-20.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@master
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v2.0.0
+        with:
+          poetry-version: 1.1.4
+      - name: Install dependencies
+        run: poetry install
+      - name: Build a binary wheel and a source tarball
+        run: poetry build
+      - name: Lint with flake8
+        run: |
+          # stop the build if there are Python syntax errors or undefined names
+          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
+          flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=E203
+      - name: Test with pytest
+        run: |
+          pytest --doctest-modules --junitxml=junit/test-results.xml --cov=pwnedpasswords_offline --cov-report=xml --cov-report=html
