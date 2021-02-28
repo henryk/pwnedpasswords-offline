@@ -1,7 +1,12 @@
 # Pwned Passwords check (offline)
 
-Download "SHA-1" version "(ordered by hash)" from https://haveibeenpwned.com/Passwords
-Extract file, yielding `pwned-passwords-sha1-ordered-by-hash-v7.txt` (for current version 7)
+![PyPI](https://img.shields.io/pypi/v/pwnedpasswords-offline)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+## Quickstart
+
+ * Download "SHA-1" version "(ordered by hash)" from https://haveibeenpwned.com/Passwords
+ * Extract file, yielding `pwned-passwords-sha1-ordered-by-hash-v7.txt` (for current version 7)
 
 ## Simple usage
 ````python

@@ -93,4 +93,6 @@ class PwnedPasswordsOfflineChecker:
             return True
 
     def lookup_raw_password(self, password: str, encoding="utf-8"):
-        return self.lookup_hash(sha1(password.encode(encoding, errors='strict')).hexdigest().upper())
+        return self.lookup_hash(
+            sha1(password.encode(encoding, errors="strict")).hexdigest().upper()
+        )
