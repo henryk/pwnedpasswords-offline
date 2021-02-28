@@ -20,21 +20,22 @@ jobs:
         with:
           poetry-version: 1.1.4
       - name: Cache Poetry virtualenv
+        if: matrix.os != 'windows-latest'
         uses: actions/cache@v1
         id: cache
-        if: matrix.os != 'windows-latest'
         with:
           path: ../.virtualenvs
           key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-z
           restore-keys: |
             poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-z
       - name: Set Poetry config
+        if: matrix.os != 'windows-latest'
         run: |
           poetry config virtualenvs.in-project false
           poetry config virtualenvs.path ../.virtualenvs
       - name: Install Dependencies
-        run: poetry install
         if: matrix.os != 'windows-latest' && steps.cache.outputs.cache-hit != 'true'
+        run: poetry install
       - name: Code Quality
         run: poetry run black . --check
       - name: Lint with flake8
