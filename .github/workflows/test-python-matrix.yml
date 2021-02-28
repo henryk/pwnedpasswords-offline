@@ -11,6 +11,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@master
+        with:
+          path: source
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
@@ -20,41 +22,46 @@ jobs:
         with:
           poetry-version: 1.1.4
       - name: Cache Poetry virtualenv
-        if: matrix.os != 'windows-latest'
         uses: actions/cache@v1
         id: cache
         with:
-          path: ../.virtualenvs
-          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-z
+          path: venvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-a
           restore-keys: |
-            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-z
+            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-a
       - name: Set Poetry config
-        if: matrix.os != 'windows-latest'
         run: |
           poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ../.virtualenvs
+          poetry config virtualenvs.path venvs
       - name: Install Dependencies
-        if: matrix.os != 'windows-latest' && steps.cache.outputs.cache-hit != 'true'
+        if: steps.cache.outputs.cache-hit != 'true'
         run: poetry install
+        working-directory: ./source
       - name: Code Quality
         run: poetry run black . --check
+        working-directory: ./source
       - name: Lint with flake8
         run: |
           # stop the build if there are Python syntax errors or undefined names
           poetry run flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
           # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
           poetry run flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics --ignore=E203
+        working-directory: ./source
       - name: Test with pytest
         run: |
           poetry run pytest --doctest-modules --junitxml=junit/test-results.xml --cov=pwnedpasswords_offline --cov-report=xml --cov-report=html
+        working-directory: ./source
       - name: Build a binary wheel and a source tarball
         run: poetry build
+        working-directory: ./source
   publish:
     name: Publish 📦 to PyPI
     needs: ci
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@master
+        with:
+          path: source
       - name: Set up Python ${{ matrix.python-version }}
         uses: actions/setup-python@v1
         with:
@@ -67,21 +74,24 @@ jobs:
         uses: actions/cache@v1
         id: cache
         with:
-          path: ../.virtualenvs
-          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-z
+          path: venvs
+          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-a
           restore-keys: |
-            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-z
+            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-a
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path ../.virtualenvs
+          poetry config virtualenvs.path venvs
       - name: Install Dependencies
-        run: poetry install
         if: steps.cache.outputs.cache-hit != 'true'
+        run: poetry install
+        working-directory: ./source
       - name: Build a binary wheel and a source tarball
         run: poetry build
+        working-directory: ./source
       - name: Publish distribution 📦 to PyPI
         if: startsWith(github.ref, 'refs/tags')
         uses: pypa/gh-action-pypi-publish@master
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
+          packages_dir: ./source/dist
