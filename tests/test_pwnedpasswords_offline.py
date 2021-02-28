@@ -33,29 +33,29 @@ def test_instantiate_nonexist(data_file_path):
 def test_open_close(data_file_path):
     a = PwnedPasswordsOfflineChecker(data_file_path)
     a.open()
-    assert a._opened
+    assert a._mh.is_open()
     a.close()
 
 
 def test_context_1(data_file_path):
     a = PwnedPasswordsOfflineChecker(data_file_path)
     with a:
-        assert a._opened
-    assert not a._opened
+        assert a._mh.is_open()
+    assert not a._mh.is_open()
 
 
 def test_context_2(data_file_path):
     with PwnedPasswordsOfflineChecker(data_file_path) as a:
-        assert a._opened
+        assert a._mh.is_open()
 
 
 def test_context_recursive_1(data_file_path):
     a = PwnedPasswordsOfflineChecker(data_file_path)
     with a:
         with a:
-            assert a._opened
-        assert a._opened
-    assert not a._opened
+            assert a._mh.is_open()
+        assert a._mh.is_open()
+    assert not a._mh.is_open()
 
 
 def test_lookup_1(data_file_path):
