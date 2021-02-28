@@ -27,7 +27,9 @@ class PwnedPasswordsOfflineChecker:
         self._fd: Optional[int] = None
 
     def _open(self):
-        self._fd = os.open(self._data_file_path, os.O_RDONLY | getattr(os, 'O_BINARY', 0))
+        self._fd = os.open(
+            self._data_file_path, os.O_RDONLY | getattr(os, "O_BINARY", 0)
+        )
         self._data = mmap.mmap(self._fd, 0, access=mmap.ACCESS_READ)
 
     def _close(self):
