@@ -76,13 +76,14 @@ jobs:
         id: cache
         with:
           path: venvs
-          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-a
+          key: poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-b
           restore-keys: |
-            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-a
+            poetry-${{ hashFiles('**/poetry.lock') }}-${{ matrix.os }}-${{ matrix.python-version }}-b
       - name: Set Poetry config
         run: |
           poetry config virtualenvs.in-project false
-          poetry config virtualenvs.path venvs
+          poetry config virtualenvs.path ../venvs
+        working-directory: ./source
       - name: Install Dependencies
         if: steps.cache.outputs.cache-hit != 'true'
         run: poetry install
