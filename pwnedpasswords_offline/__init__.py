@@ -4,7 +4,7 @@ from hashlib import sha1
 from pathlib import Path
 from typing import Optional, Union
 
-__version__ = "0.1.0"
+__version__ = "1.0.1"
 
 
 class PwnedPasswordsOfflineChecker:
