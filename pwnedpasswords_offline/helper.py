@@ -5,7 +5,13 @@ from typing import Optional, Union
 
 
 class MmapHelper:
-    def __init__(self, data_file: Union[Path, str], default_file_name: Optional[str] = None, fixed_size: Optional[int] = None, write: bool = False):
+    def __init__(
+        self,
+        data_file: Union[Path, str],
+        default_file_name: Optional[str] = None,
+        fixed_size: Optional[int] = None,
+        write: bool = False,
+    ):
         if not isinstance(data_file, Path):
             data_file = Path(data_file)
 
@@ -13,12 +19,18 @@ class MmapHelper:
             if default_file_name is not None:
                 data_file = data_file / default_file_name
             else:
-                raise ValueError("Cannot open dir as data file when no default name is given")
+                raise ValueError(
+                    "Cannot open dir as data file when no default name is given"
+                )
 
         if not (data_file.exists() and data_file.is_file()) and not write:
             raise ValueError(
-                "Must specify path or directory to data file" +
-                (f" (should be {default_file_name})" if default_file_name is not None else "")
+                "Must specify path or directory to data file"
+                + (
+                    f" (should be {default_file_name})"
+                    if default_file_name is not None
+                    else ""
+                )
             )
 
         self._data_file_path: Path = data_file
@@ -31,14 +43,19 @@ class MmapHelper:
     def _open(self):
         if self._write:
             self._fd = os.open(
-                self._data_file_path, os.O_RDWR | os.O_CREAT | getattr(os, "O_BINARY", 0)
+                self._data_file_path,
+                os.O_RDWR | os.O_CREAT | getattr(os, "O_BINARY", 0),
             )
-            self.data = mmap.mmap(self._fd, self._fixed_size or 0, access=mmap.ACCESS_WRITE)
+            self.data = mmap.mmap(
+                self._fd, self._fixed_size or 0, access=mmap.ACCESS_WRITE
+            )
         else:
             self._fd = os.open(
                 self._data_file_path, os.O_RDONLY | getattr(os, "O_BINARY", 0)
             )
-            self.data = mmap.mmap(self._fd, self._fixed_size or 0, access=mmap.ACCESS_READ)
+            self.data = mmap.mmap(
+                self._fd, self._fixed_size or 0, access=mmap.ACCESS_READ
+            )
 
     def _close(self):
         self.data.close()

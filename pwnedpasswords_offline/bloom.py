@@ -2,7 +2,7 @@ import struct
 from collections import deque
 from hashlib import sha1
 from pathlib import Path
-from typing import Tuple, Deque
+from typing import Deque, Tuple
 
 from pwnedpasswords_offline.helper import MmapHelper
 
@@ -47,7 +47,9 @@ class PwnedBloomFilter:
         retval = deque()
 
         for i in range(NUM_HASHES):
-            h = struct.unpack("<I", full_hash[i * HASH_LENGTH_BYTES:(i + 1) * HASH_LENGTH_BYTES])[0]
+            h = struct.unpack(
+                "<I", full_hash[i * HASH_LENGTH_BYTES : (i + 1) * HASH_LENGTH_BYTES]
+            )[0]
             retval.append((h >> 3, 1 << (h & 0x7)))
 
         return retval

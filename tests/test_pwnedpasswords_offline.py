@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from pwnedpasswords_offline import PwnedPasswordsOfflineChecker
+from pwnedpasswords_offline.bloom import PwnedBloomFilter
 
 
 @pytest.fixture
@@ -105,3 +106,15 @@ def test_lookup_all(data_file_path):
 def test_lookup_raw(data_file_path):
     with PwnedPasswordsOfflineChecker(data_file_path) as a:
         assert a.lookup_raw_password("Password1!")
+
+
+def test_lookup_with_bloom(data_file_path, tmp_path):
+    bloom_file = tmp_path / "test.bloom"
+    with PwnedBloomFilter(bloom_file) as bf:
+        bf.add("32CA9FD4B3F319419F2EA6F883BF45686089498D".encode())
+
+    with PwnedPasswordsOfflineChecker(data_file_path, bloom_file=bloom_file) as a:
+        assert a.lookup_hash("32CA9FD4B3F319419F2EA6F883BF45686089498D")
+        assert a.lookup_hash("000000005AD76BD555C1D6D771DE417A4B87E4B4")
+
+        assert not a.lookup_hash("BB" * 20)
