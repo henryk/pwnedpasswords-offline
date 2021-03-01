@@ -29,8 +29,8 @@ SCENARIOS = [
     Scenario(0, BASE_COUNT, True),
     Scenario(BASE_COUNT, 0, False),
     Scenario(0, BASE_COUNT, False),
-    Scenario(BASE_COUNT // 2, 50 * BASE_COUNT, True),
-    Scenario(BASE_COUNT // 2, 50 * BASE_COUNT, False),
+    Scenario(BASE_COUNT // 100, BASE_COUNT - BASE_COUNT // 100, True),
+    Scenario(BASE_COUNT // 100, BASE_COUNT - BASE_COUNT // 100, False),
 ]
 
 
