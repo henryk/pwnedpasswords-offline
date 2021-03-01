@@ -1,7 +1,7 @@
 from contextlib import suppress
 from hashlib import sha1
 from pathlib import Path
-from typing import Literal, Optional, Union
+from typing import Union
 
 from .bloom import PwnedBloomFilter
 from .helper import MmapHelper
