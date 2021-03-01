@@ -38,5 +38,6 @@ def main():
 
     print(f"Took {diff}s, {ops_per_sec} per sec")
 
+
 if __name__ == "__main__":
     main()
