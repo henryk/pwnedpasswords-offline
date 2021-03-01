@@ -78,6 +78,9 @@ class PwnedPasswordsOfflineChecker:
         if isinstance(targeth, str):
             targeth = targeth.encode("us-ascii")
 
+        if self._bf and not self._bf.contains(targeth):
+            return False
+
         lowp = 0
         highp = self._mh.data.rfind(b"\x0a", 0, self._mh.data.size()) + 1
 
