@@ -7,7 +7,7 @@ DATA_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v7.txt"
 BLOOM_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v7.bloom"
 
 
-if __name__ == "__main__":
+def main():
     start = time()
     lap = start
     total_count = 0
@@ -37,3 +37,6 @@ if __name__ == "__main__":
     ops_per_sec = total_count / diff
 
     print(f"Took {diff}s, {ops_per_sec} per sec")
+
+if __name__ == "__main__":
+    main()

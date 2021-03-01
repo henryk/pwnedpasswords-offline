@@ -21,6 +21,9 @@ isort = "^5.7.0"
 flake8 = "^3.8.4"
 pytest-cov = "^2.11.1"
 
+[tool.poetry.scripts]
+pwnedpasswords_offline_seed_bloom = "pwnedpasswords_offline.tools.seed_bloom:main"
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
