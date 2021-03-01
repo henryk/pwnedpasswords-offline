@@ -44,7 +44,7 @@ class MmapHelper:
         if self._write:
             self._fd = os.open(
                 self._data_file_path,
-                os.O_RDWR | os.O_CREAT | getattr(os, "O_BINARY", 0),
+                os.O_RDWR | os.O_CREAT | os.O_APPEND | getattr(os, "O_BINARY", 0),
             )
             self.data = mmap.mmap(
                 self._fd, self._fixed_size or 0, access=mmap.ACCESS_WRITE
