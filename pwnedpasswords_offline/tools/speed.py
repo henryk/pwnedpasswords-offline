@@ -14,7 +14,7 @@ OUTER_PRIMING_COUNT = 2
 OUTER_LOOP_COUNT = 4
 INNER_PRIMING_COUNT = 0
 INNER_LOOP_COUNT = 3
-DATA_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v7.txt"
+DATA_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v8.txt"
 
 
 @dataclass(eq=True, frozen=True)

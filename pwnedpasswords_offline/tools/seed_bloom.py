@@ -3,8 +3,8 @@ from time import time
 
 from pwnedpasswords_offline.bloom import PwnedBloomFilter
 
-DATA_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v7.txt"
-BLOOM_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v7.bloom"
+DATA_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v8.txt"
+BLOOM_FILE_NAME = "data/pwned-passwords-sha1-ordered-by-hash-v8.bloom"
 
 
 def main():
