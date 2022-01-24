@@ -12,14 +12,14 @@ include = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.6"
+python = "^3.6.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2"
-black = "^20.8b1"
-isort = "^5.7.0"
-flake8 = "^3.8.4"
-pytest-cov = "^2.11.1"
+black = "^21.12b0"
+isort = "^5.10.1"
+flake8 = "^4.0.1"
+pytest-cov = "^3.0.0"
 
 [tool.poetry.scripts]
 pwnedpasswords_offline_seed_bloom = "pwnedpasswords_offline.tools.seed_bloom:main"

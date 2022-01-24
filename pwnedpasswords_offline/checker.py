@@ -19,7 +19,7 @@ class PwnedPasswordsOfflineChecker:
             data_file = Path(data_file)
 
         self._mh = MmapHelper(
-            data_file, default_file_name="pwned-passwords-sha1-ordered-by-hash-v7.txt"
+            data_file, default_file_name="pwned-passwords-sha1-ordered-by-hash-v8.txt"
         )
         self._bf = None
 
@@ -30,7 +30,7 @@ class PwnedPasswordsOfflineChecker:
                         data_file
                         if data_file.is_dir()
                         else data_file.parent
-                        / "pwned-passwords-sha1-ordered-by-hash-v7.bloom",
+                        / "pwned-passwords-sha1-ordered-by-hash-v8.bloom",
                         readonly=True,
                     )
             else:

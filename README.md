@@ -6,13 +6,13 @@
 ## Features
 
  * Check passwords or plain SHA-1 hashes against haveibeenpwned password list
- * Fully offline operation, needs to be provided with external database file (~25 GB)
+ * Fully offline operation, needs to be provided with external database file (~35 GB)
  * Optional [Bloom filter](https://en.wikipedia.org/wiki/Bloom_filter) to speed up common (negative) case
 
 ## Quickstart
 
 * Download "SHA-1" version "(ordered by hash)" from https://haveibeenpwned.com/Passwords
-* Extract file, yielding `pwned-passwords-sha1-ordered-by-hash-v7.txt` (for current version 7), put into `data` directory under current directory
+* Extract file, yielding `pwned-passwords-sha1-ordered-by-hash-v8.txt` (for current version 8), put into `data` directory under current directory
 * Install with `pip install pwnedpasswords_offline`
 * Optional: Seed Bloom filter: `pwnedpasswords_offline_seed_bloom`, takes about 45min to run, will generate a 512MiB file
 
@@ -33,7 +33,7 @@ The data files are opened with mmap(2), and accessed in random order. No explici
 ## Simple usage
 ````python
 from pwnedpasswords_offline import PwnedPasswordsOfflineChecker
-if PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v7.txt").lookup_raw_password("Password1!"):
+if PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v8.txt").lookup_raw_password("Password1!"):
     print("Pwned!")
 ````
 
@@ -42,7 +42,7 @@ You can also pre-open the database file, especially if you're checking multiple 
 
 ````python
 from pwnedpasswords_offline import PwnedPasswordsOfflineChecker
-checker = PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v7.txt")
+checker = PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v8.txt")
 checker.open()
 for password in ["Password1!", "correct horse battery staple", "actress stapling driver placidly swivel doorknob"]:
     if checker.lookup_raw_password(password):
@@ -58,7 +58,7 @@ You can use the object as a context manager to automatically open and close it:
 
 `````python
 from pwnedpasswords_offline import PwnedPasswordsOfflineChecker
-with PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v7.txt") as checker:
+with PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v8.txt") as checker:
     for password in ["Password1!", "correct horse battery staple", "actress stapling driver placidly swivel doorknob"]:
         if checker.lookup_raw_password(password):
             print(f"'{password}' is pwned!")
@@ -70,6 +70,6 @@ Instead of calling `.lookup_raw_password()` you can call `.lookup_hash()` if you
 
 ````python
 from pwnedpasswords_offline import PwnedPasswordsOfflineChecker
-if PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v7.txt").lookup_hash("32CA9FD4B3F319419F2EA6F883BF45686089498D"):
+if PwnedPasswordsOfflineChecker("data/pwned-passwords-sha1-ordered-by-hash-v8.txt").lookup_hash("32CA9FD4B3F319419F2EA6F883BF45686089498D"):
     print("Pwned!")
 ````
