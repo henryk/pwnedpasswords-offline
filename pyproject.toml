@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pwnedpasswords-offline"
-version = "1.1.0"
+version = "1.2.0"
 description = "Pwned Passwords check (offline)"
 authors = ["Henryk Plötz <henryk@ploetzli.ch>"]
 license = "LGPL-2.1-or-later"
